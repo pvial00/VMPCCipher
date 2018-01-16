@@ -32,7 +32,7 @@ void ksa( unsigned char *K, unsigned char *iv ) {
 unsigned char * crypt(unsigned char *inbuf, unsigned char *outbuf) {
     int n = 0;
     int i;
-    int dlen = strlen(inbuf);
+    int dlen = sizeof(inbuf);
     printf("dlen%d\n", dlen);
     for (i = 0; i < dlen; i++) {
         s = P[((s + P[n]) % 256)];

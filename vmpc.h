@@ -4,8 +4,6 @@
 int P[256];
 int s;
 int temp;
-unsigned char *data = NULL;
-unsigned char *buf = NULL;
 
 void ksa( unsigned char *K, unsigned char *iv ) {
     int i, n, m, c, z;
@@ -31,14 +29,14 @@ void ksa( unsigned char *K, unsigned char *iv ) {
     }
 }
 
-unsigned char * crypt(unsigned char *data) {
+unsigned char * crypt(unsigned char *inbuf, unsigned char *outbuf) {
     int n = 0;
     int i;
-    int dlen = strlen(data);
+    int dlen = strlen(inbuf);
     printf("dlen%d\n", dlen);
     for (i = 0; i < dlen; i++) {
         s = P[((s + P[n]) % 256)];
-        buf[i] = data[i] ^ P[(P[P[s]]+1) % 256];
+        outbuf[i] = inbuf[i] ^ P[(P[P[s]]+1) % 256];
         temp = P[n];
         P[n] = P[s];
         P[s] = temp;

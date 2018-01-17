@@ -29,12 +29,10 @@ void ksa( unsigned char *K, unsigned char *iv ) {
     }
 }
 
-unsigned char * crypt(unsigned char *inbuf, unsigned char *outbuf) {
+unsigned char * crypt(unsigned char *inbuf, unsigned char *outbuf, int buflen) {
     int n = 0;
     int i;
-    int dlen = sizeof(inbuf);
-    printf("dlen%d\n", dlen);
-    for (i = 0; i < dlen; i++) {
+    for (i = 0; i < buflen; i++) {
         s = P[((s + P[n]) % 256)];
         outbuf[i] = inbuf[i] ^ P[(P[P[s]]+1) % 256];
         temp = P[n];

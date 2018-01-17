@@ -1,1 +1,1 @@
-gcc -o vmpc vmpc.c
+gcc -o vmpcrypt vmpcrypt.c

@@ -1,2 +1,1 @@
-rm vmpc
-gcc -g -o vmpc vmpc.c
+gcc -o vmpc vmpc.c

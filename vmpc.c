@@ -11,12 +11,10 @@ int main(int argc, char *argv[]) {
     int x = 0;
     int ch;
     unsigned char *K;
+    int key_length = 16;
     int iv_length = 16;
     unsigned char iv[iv_length];
     int i;
-    randfile = fopen("/dev/urandom", "r");
-    ssize_t result = fread(&iv, 1, iv_length, randfile);
-    fclose(randfile);
     mode = argv[1];
     in = argv[2];
     out = argv[3];
@@ -32,9 +30,9 @@ int main(int argc, char *argv[]) {
     if (strcmp(mode, "encrypt") == 0) {
         buf = malloc(fsize);
         randfile = fopen("/dev/urandom", "rb");
-        fread(&iv, 1, iv_length, randfile);
+        fread(&iv, iv_length, 1, randfile);
         fclose(randfile);
-        ksa(K, iv);
+        ksa(K, iv, key_length, iv_length);
         crypt(data, buf, fsize);
         fwrite(iv, 1, iv_length, outfile);
         fwrite(buf, 1, fsize, outfile);
@@ -47,14 +45,14 @@ int main(int argc, char *argv[]) {
         }
         unsigned char *msg = NULL;
         msg = malloc((fsize - iv_length));
-        for (i = iv_length; i < (fsize - iv_length); i++) {
+        for (i = iv_length; i < fsize; i++) {
             msg[x] = data[i];
             x++;
         }
         free(data);
-        ksa(K, iv);
-        crypt(msg, msg, (fsize - iv_length));
-        fwrite(msg, 1, (fsize - iv_length), outfile);
+        ksa(K, iv, key_length, iv_length);
+        crypt(msg, msg, x);
+        fwrite(msg, 1, x, outfile);
         free(msg);
     }
     fclose(outfile);
